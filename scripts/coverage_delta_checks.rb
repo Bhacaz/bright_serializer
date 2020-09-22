@@ -185,7 +185,7 @@ class GithubApp
     text = +"|Coverage|File|\n|---|---|\n"
 
     @delta_coverage[:files].each do |filename, coverage|
-      text << "|#{coverage}%|#{filename}|\n"
+      text << "|#{coverage.round(2)}%|#{filename}|\n"
     end
     text
   end
@@ -216,7 +216,6 @@ end
 # params[:build] = ENV['BUILD_NUMBER']
 # params[:root] = ENV['WORKSPACE']
 # params[:build_url] = ENV['BUILD_URL']
-
 
 data = SimplecovDelta.extract_delta
 delta_coverage = SimplecovDelta.calculate_delta_coverage(data)

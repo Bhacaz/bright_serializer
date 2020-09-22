@@ -26,11 +26,8 @@ class Inflector
 
     def dash(underscored_word)
       underscored_word.tr!('_', '-')
-      underscored_word
-    end
-
-    def untested_method2
-      2 + 2 == 4
+      w = underscored_word
+      w
     end
 
     # File activesupport/lib/active_support/inflector/methods.rb, line 271
