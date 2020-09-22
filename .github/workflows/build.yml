@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: coverage
-        path: coverage/index.html
+        path: coverage/
   Rubocop:
     runs-on: ubuntu-latest
     steps:

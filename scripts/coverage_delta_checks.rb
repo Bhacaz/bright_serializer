@@ -26,14 +26,11 @@ class SimplecovDelta
           files_diff << FileDiff.new(filename, [])
         elsif line.start_with?('@@')
           current_file_diff = files_diff.last
-          first_line_changed = line.scan(/@@ -.+\+(.\d?)/)[0].first.to_i
-          offset = 1
-          while each_diff_output[index + offset] && !each_diff_output[index + offset].start_with?('@@ -', 'diff')
-            if each_diff_output[index + offset].start_with?('+')
-              current_file_diff.added_lines << first_line_changed + offset - 1
-            end
-            offset += 1
-          end
+          first_line_add = line.scan(/@@ -.+\+(.+?) @@/)[0].first
+          first_line, number_added = first_line_add.split(',')
+          first_line = first_line.to_i
+          number_added = number_added&.to_i
+          current_file_diff.added_lines << (number_added ? (first_line..first_line + number_added - 1).to_a : [first_line])
         end
       end
 
@@ -65,20 +62,24 @@ class SimplecovDelta
 
         coverage_by_line = coverage_by_line['lines']
         covered_lines = 0
-        relevant_lines = file_diff.added_lines.size
-        file_diff.added_lines.each do |line_number|
-          covered = coverage_by_line[line_number - 1]
-          if covered.nil?
-            relevant_lines -= 1
-          elsif covered > 0
-            covered_lines += 1
+        relevant_lines = file_diff.added_lines.flatten.size
+        file_diff.added_lines.each do |line_batch|
+          line_batch.each do |line_number|
+            covered = coverage_by_line[line_number - 1]
+            if covered.nil?
+              relevant_lines -= 1
+              line_batch.delete(line_number)
+            elsif covered > 0
+              covered_lines += 1
+              line_batch.delete(line_number)
+            end
           end
         end
-        tested_lines_score[file_diff.filename] = covered_lines.to_f / relevant_lines * 100
+        tested_lines_score[file_diff.filename] = { coverage: covered_lines.to_f / relevant_lines * 100, missing_lines: file_diff.added_lines }
       end
 
       tested_lines_score
-      { files: tested_lines_score, mean: mean(tested_lines_score.values).round(2), global: total_coverage.round(2) }
+      { files: tested_lines_score, mean: mean(tested_lines_score.values.map { |f| f[:coverage] }).round(2), global: total_coverage.round(2) }
     end
   end
 end
@@ -172,7 +173,7 @@ class GithubApp
     conclusion = @delta_coverage[:mean] >= 80 ? 'success' : 'failure'
     {
       name: "Simplecov Checks",
-      head_sha: ENV['ghprbActualCommit'] || ENV['GIT_COMMIT'] || '0d19b396b771a81e0dc305cc1c380df47d2ab012',
+      head_sha: ENV['ghprbActualCommit'] || ENV['GIT_COMMIT'] || '2cc179024ebc90a3488af791455c374ec26cc4f9',
       details_url: ENV['BUILD_URL'] || 'https://jenkins2.petalmd.com/blue/organizations/jenkins/petalmd.rails%2Fpetalmd.rails/detail/PR-6012/1/pipeline',
       status: "completed",
       completed_at: Time.now.utc.iso8601,
@@ -182,10 +183,10 @@ class GithubApp
   end
 
   def build_output_text
-    text = +"|Coverage|File|\n|---|---|\n"
+    text = +"|Coverage|File|Missing lines|\n|---|---|---|\n"
 
     @delta_coverage[:files].each do |filename, coverage|
-      text << "|#{coverage.round(2)}%|#{filename}|\n"
+      text << "|#{coverage[:coverage].round(2)}%|#{filename}|#{coverage[:missing_lines]}|\n"
     end
     text
   end
