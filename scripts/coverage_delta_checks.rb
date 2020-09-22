@@ -191,11 +191,27 @@ class GithubApp
     text
   end
 
+  def build_annotations
+    @delta_coverage[:files].select { |file| file[:missing_lines].flatten.any? }.flat_map do |file|
+      file[:missing_lines].each do |batch_lines|
+        {
+          file: file[:filename],
+          start_line: batch_lines.first,
+          end_line: batch_lines.last,
+          annotation_level: 'warning',
+          message: "Change not tested. Lines: #{batch_lines.join(',')}",
+          title: 'Delta Coverage'
+        }
+      end
+    end
+  end
+
   def build_output
     {
       title: "Branch coverage: #{@delta_coverage[:mean]}%",
       summary: "[Build Jenkins](https://jenkins2.petalmd.com/blue/organizations/jenkins/petalmd.rails%2Fpetalmd.rails/detail/PR-6012/1/pipeline)\nTotal coverage: #{@delta_coverage[:global]}%\nBranch coverage must be ≥ 80%",
-      text: build_output_text
+      text: build_output_text,
+      annotations: build_annotations
     }
   end
 
