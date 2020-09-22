@@ -24,6 +24,15 @@ class Inflector
       camel_cased_word
     end
 
+    def random_method
+      a = 2
+      b = 3
+      if a  == 3
+        return b
+      end
+      b
+    end
+
     def dash(underscored_word)
       underscored_word.tr!('_', '-')
       w = underscored_word
