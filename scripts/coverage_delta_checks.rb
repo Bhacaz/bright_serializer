@@ -193,7 +193,7 @@ class GithubApp
 
   def build_annotations
     @delta_coverage[:files].select { |_filename, coverage| coverage[:missing_lines].flatten.any? }.flat_map do |filename, coverage|
-      coverage[:missing_lines].each do |batch_lines|
+      coverage[:missing_lines].map do |batch_lines|
         {
           file: filename,
           start_line: batch_lines.first,
@@ -236,4 +236,4 @@ end
 
 data = SimplecovDelta.extract_delta
 delta_coverage = SimplecovDelta.calculate_delta_coverage(data)
-p GithubApp.new(delta_coverage).post_check
+GithubApp.new(delta_coverage).post_check
