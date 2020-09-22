@@ -164,6 +164,7 @@ class GithubApp
       http.use_ssl = true
       req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "Bearer #{build_app_jwt}" })
       res = http.request(req)
+      p res.body
 
       JSON.parse(res.body)['token']
     end
