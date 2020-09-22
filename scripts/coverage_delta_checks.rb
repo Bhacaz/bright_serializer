@@ -211,7 +211,7 @@ class GithubApp
       title: "Branch coverage: #{@delta_coverage[:mean]}%",
       summary: "[Build Jenkins](https://jenkins2.petalmd.com/blue/organizations/jenkins/petalmd.rails%2Fpetalmd.rails/detail/PR-6012/1/pipeline)\nTotal coverage: #{@delta_coverage[:global]}%\nBranch coverage must be ≥ 80%",
       text: build_output_text,
-      annotations: (p build_annotations)
+      annotations: build_annotations
     }
   end
 
@@ -219,7 +219,7 @@ class GithubApp
     uri = URI.parse("https://api.github.com/repos/#{ENV['REPOSITORY']}/check-runs")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "token", 'Accept' => 'application/vnd.github.antiope-preview+json' })
+    req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "token #{self.class.get_app_access_token}", 'Accept' => 'application/vnd.github.antiope-preview+json' })
     req.body = build_checks_body.to_json
     res = http.request(req)
     res.body
