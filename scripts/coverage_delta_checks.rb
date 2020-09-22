@@ -41,7 +41,7 @@ class SimplecovDelta
     end
 
     def coverage_results
-      @coverage_results ||= JSON.parse(File.read('../coverage/.resultset.json')).first.last['coverage']
+      @coverage_results ||= JSON.parse(File.read('coverage/.resultset.json')).first.last['coverage']
     end
 
     def total_coverage
