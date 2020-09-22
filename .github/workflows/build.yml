@@ -24,6 +24,7 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
         GITHUB_APP_INSTALLATION_ID: ${{ secrets.GITHUB_APP_INSTALLATION_ID }}
+        GIT_COMMIT: ${{ github.sha }}
   Rubocop:
     runs-on: ubuntu-latest
     steps:
