@@ -200,7 +200,7 @@ class GithubApp
   end
 
   def post_check
-    uri = URI.parse("https://api.github.com/repos/#{ENV['REPOSITORY]}/check-runs")
+    uri = URI.parse("https://api.github.com/repos/#{ENV['REPOSITORY']}/check-runs")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "token #{self.class.get_app_access_token}", 'Accept' => 'application/vnd.github.antiope-preview+json' })
