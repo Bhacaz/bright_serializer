@@ -22,8 +22,8 @@ jobs:
       run: ruby scripts/coverage_delta_checks.rb
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
-        GITHUB_APP_INSTALLATION_ID: ${{ secrets.GITHUB_APP_INSTALLATION_ID }}
+        GITHUB_APP_ID: ${{ secrets.APP_ID }}
+        GITHUB_APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
         GIT_COMMIT: ${{ github.sha }}
         REPOSITORY: ${{ github.repository }}
   Rubocop:
