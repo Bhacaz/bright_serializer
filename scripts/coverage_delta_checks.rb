@@ -146,9 +146,6 @@ class GithubApp
 
   class << self
     def build_app_jwt
-    p SECRET_KEY
-    p GITHUB_APP_ID
-    p GITHUB_APP_INSTALLATION_ID
       payload = {
         # issued at time
         iat: Time.now.to_i,
@@ -167,8 +164,6 @@ class GithubApp
       http.use_ssl = true
       req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "Bearer #{build_app_jwt}" })
       res = http.request(req)
-      p res.body
-
       JSON.parse(res.body)['token']
     end
   end
@@ -225,4 +220,4 @@ end
 
 data = SimplecovDelta.extract_delta
 delta_coverage = SimplecovDelta.calculate_delta_coverage(data)
-p GithubApp.new(delta_coverage).post_check
+GithubApp.new(delta_coverage).post_check
