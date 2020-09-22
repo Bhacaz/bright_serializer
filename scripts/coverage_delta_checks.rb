@@ -192,10 +192,10 @@ class GithubApp
   end
 
   def build_annotations
-    @delta_coverage[:files].select { |file| file[:missing_lines].flatten.any? }.flat_map do |file|
-      file[:missing_lines].each do |batch_lines|
+    @delta_coverage[:files].select { |_filename, coverage| coverage[:missing_lines].flatten.any? }.flat_map do |filename, coverage|
+      coverage[:missing_lines].each do |batch_lines|
         {
-          file: file[:filename],
+          file: filename,
           start_line: batch_lines.first,
           end_line: batch_lines.last,
           annotation_level: 'warning',
