@@ -146,6 +146,9 @@ class GithubApp
 
   class << self
     def build_app_jwt
+    p SECRET_KEY
+    p GITHUB_APP_ID
+    p GITHUB_APP_INSTALLATION_ID
       payload = {
         # issued at time
         iat: Time.now.to_i,
