@@ -26,6 +26,11 @@ jobs:
         GITHUB_APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
         GIT_COMMIT: ${{ github.sha }}
         REPOSITORY: ${{ github.repository }}
+    - name: Coverage artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage
+        path: coverage/index.html
   Rubocop:
     runs-on: ubuntu-latest
     steps:
