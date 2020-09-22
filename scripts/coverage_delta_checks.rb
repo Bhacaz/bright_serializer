@@ -137,8 +137,8 @@ end
 
 class GithubApp
   SECRET_KEY = ENV['SECRET_KEY']
-  GITHUB_APP_ID = ENV['APP_ID']
-  GITHUB_APP_INSTALLATION_ID = ENV['APP_INSTALLATION_ID']
+  GITHUB_APP_ID = ENV['GITHUB_APP_ID']
+  GITHUB_APP_INSTALLATION_ID = ENV['GITHUB_APP_INSTALLATION_ID']
 
   def initialize(delta_coverage)
     @delta_coverage = delta_coverage
