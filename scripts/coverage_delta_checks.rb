@@ -44,7 +44,7 @@ class SimplecovDelta
     def total_coverage
       coverage_each_file = []
       coverage_results.each do |_filename, coverage_by_line|
-        lines = coverage_by_line['lines']
+        lines = coverage_by_line['lines'].dup
         lines.compact!
         total = lines.size
         with_coverage = lines.count { |line| line > 0 }
@@ -64,7 +64,7 @@ class SimplecovDelta
         covered_lines = 0
         relevant_lines = file_diff.added_lines.flatten.size
         file_diff.added_lines.each do |line_batch|
-          line_batch.each do |line_number|
+          line_batch.dup.each do |line_number|
             covered = coverage_by_line[line_number - 1]
             if covered.nil?
               relevant_lines -= 1
