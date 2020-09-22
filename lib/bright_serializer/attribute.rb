@@ -32,7 +32,12 @@ module BrightSerializer
     def condition?(object, params)
       return true unless @condition
 
-      @condition.call(object, params)
+      r = @condition.call(object, params)
+      return r
+    end
+
+    def untested_method1
+      2 + 2 == 4
     end
   end
 end

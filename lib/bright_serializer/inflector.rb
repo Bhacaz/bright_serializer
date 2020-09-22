@@ -29,6 +29,10 @@ class Inflector
       underscored_word
     end
 
+    def untested_method2
+      2 + 2 == 4
+    end
+
     # File activesupport/lib/active_support/inflector/methods.rb, line 271
     def constantize(camel_cased_word)
       names = camel_cased_word.split('::')
