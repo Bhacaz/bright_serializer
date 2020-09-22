@@ -193,13 +193,13 @@ class GithubApp
 
   def build_annotations
     @delta_coverage[:files].select { |_filename, coverage| coverage[:missing_lines].flatten.any? }.flat_map do |filename, coverage|
-      coverage[:missing_lines].map do |batch_lines|
+      coverage[:missing_lines].select(&:any?).map do |batch_lines|
         {
           path: filename,
           start_line: batch_lines.first,
           end_line: batch_lines.last,
           annotation_level: 'warning',
-          message: "Change not tested. Lines: #{batch_lines.join(',')}",
+          message: "Change not tested. Lines: #{batch_lines.join(', ')}",
           title: 'Delta Coverage'
         }
       end
@@ -211,7 +211,7 @@ class GithubApp
       title: "Branch coverage: #{@delta_coverage[:mean]}%",
       summary: "[Build Jenkins](https://jenkins2.petalmd.com/blue/organizations/jenkins/petalmd.rails%2Fpetalmd.rails/detail/PR-6012/1/pipeline)\nTotal coverage: #{@delta_coverage[:global]}%\nBranch coverage must be ≥ 80%",
       text: build_output_text,
-      annotations: build_annotations
+      annotations: (p build_annotations)
     }
   end
 
@@ -219,7 +219,7 @@ class GithubApp
     uri = URI.parse("https://api.github.com/repos/#{ENV['REPOSITORY']}/check-runs")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "token #{self.class.get_app_access_token}", 'Accept' => 'application/vnd.github.antiope-preview+json' })
+    req = Net::HTTP::Post.new(uri.request_uri, { 'Authorization' => "token", 'Accept' => 'application/vnd.github.antiope-preview+json' })
     req.body = build_checks_body.to_json
     res = http.request(req)
     res.body
