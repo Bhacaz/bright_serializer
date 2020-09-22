@@ -172,7 +172,7 @@ class GithubApp
   def build_checks_body
     conclusion = @delta_coverage[:mean] >= 80 ? 'success' : 'failure'
     {
-      name: "Simplecov Checks",
+      name: "Delta Coverage",
       head_sha: ENV['ghprbActualCommit'] || ENV['GIT_COMMIT'] || '2cc179024ebc90a3488af791455c374ec26cc4f9',
       details_url: ENV['BUILD_URL'] || 'https://jenkins2.petalmd.com/blue/organizations/jenkins/petalmd.rails%2Fpetalmd.rails/detail/PR-6012/1/pipeline',
       status: "completed",
