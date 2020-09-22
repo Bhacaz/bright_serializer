@@ -221,4 +221,4 @@ end
 
 data = SimplecovDelta.extract_delta
 delta_coverage = SimplecovDelta.calculate_delta_coverage(data)
-GithubApp.new(delta_coverage).post_check
+p GithubApp.new(delta_coverage).post_check
