@@ -195,7 +195,7 @@ class GithubApp
     @delta_coverage[:files].select { |_filename, coverage| coverage[:missing_lines].flatten.any? }.flat_map do |filename, coverage|
       coverage[:missing_lines].map do |batch_lines|
         {
-          file: filename,
+          path: filename,
           start_line: batch_lines.first,
           end_line: batch_lines.last,
           annotation_level: 'warning',
