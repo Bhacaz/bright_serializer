@@ -65,6 +65,7 @@ class Inflector
           next candidate if constant.const_defined?(name, false)
           next candidate unless Object.const_defined?(name)
 
+          # Hello
           # Go down the ancestors to check if it is owned directly. The check
           # stops when we reach Object or the end of ancestors tree.
           constant = constant.ancestors.each_with_object(constant) do |ancestor, const|
