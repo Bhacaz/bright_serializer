@@ -32,14 +32,6 @@ class Inflector
       end
       b
     end
-    
-    def random_method2
-      [
-        1,
-        3,
-        3
-      ].map(&:to_s)
-    end
 
     def dash(underscored_word)
       underscored_word.tr!('_', '-')
@@ -77,6 +69,15 @@ class Inflector
           constant.const_get(name, false)
         end
       end
+    end
+    
+    def random_method2
+      a = [
+        1,
+        3,
+        3
+      ].map(&:to_s)
+      "#{a}"
     end
 
     # File active_support/core_ext/hash/keys.rb, line 156
