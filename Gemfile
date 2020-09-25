@@ -15,4 +15,5 @@ group :test do
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'simplecov'
+  gem 'delta-simplecov-checks', git: 'https://github.com/Bhacaz/delta-simplecov-checks'
 end
