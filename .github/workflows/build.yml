@@ -19,13 +19,11 @@ jobs:
     - name: Specs
       run: bundle exec rake
     - name: Check delta coverage
-      run: ruby scripts/coverage_delta_checks.rb
+      run: bundle exec delta-simplecov-checks --sha ${{ github.sha }} --repository ${{ github.repository }}
       env:
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        GITHUB_APP_ID: ${{ secrets.APP_ID }}
-        GITHUB_APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
-        GIT_COMMIT: ${{ github.sha }}
-        REPOSITORY: ${{ github.repository }}
+        APP_SECRET: ${{ secrets.SECRET_KEY }}
+        APP_ID: ${{ secrets.APP_ID }}
+        APP_INSTALLATION_ID: ${{ secrets.APP_INSTALLATION_ID }}
     - name: Coverage artifact
       uses: actions/upload-artifact@v2
       with:
