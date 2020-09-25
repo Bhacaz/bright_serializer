@@ -32,6 +32,14 @@ class Inflector
       end
       b
     end
+    
+    def random_method2
+      [
+        1,
+        3,
+        3
+      ].map(&:to_s)
+    end
 
     def dash(underscored_word)
       underscored_word.tr!('_', '-')
